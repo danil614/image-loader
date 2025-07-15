@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Цвета -->
+    <Color x:Key="BtnMainColor">#FF5A9BD5</Color>      <!-- обычный -->
+    <Color x:Key="BtnHoverColor">#FF73AEE4</Color>     <!-- курсор -->
+    <Color x:Key="BtnPressColor">#FF477BBC</Color>     <!-- клик -->
+    <SolidColorBrush x:Key="BtnMainBrush" Color="{StaticResource BtnMainColor}" />
+    <SolidColorBrush x:Key="BtnHoverBrush" Color="{StaticResource BtnHoverColor}" />
+    <SolidColorBrush x:Key="BtnPressBrush" Color="{StaticResource BtnPressColor}" />
+
+    <SolidColorBrush x:Key="PgForeground" Color="#FF5CB85C" />  <!-- индикатор -->
+    <SolidColorBrush x:Key="PgBackground" Color="#33AAAAAA" />  <!-- трек -->
+
+    <!-- Полукруглая кнопка -->
+    <Style x:Key="RoundedButtonStyle" TargetType="Button">
+        <!-- базовые свойства -->
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="{StaticResource BtnMainBrush}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Padding" Value="10,4" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+
+        <!-- собственный шаблон -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="18"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            RecognizesAccessKey="True" />
+                    </Border>
+
+                    <!-- триггеры -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BtnHoverBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BtnPressBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Полукруглый ProgressBar -->
+    <Style x:Key="RoundedProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Height" Value="22" />
+        <Setter Property="Foreground" Value="{StaticResource PgForeground}" />
+        <Setter Property="Background" Value="{StaticResource PgBackground}" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Border x:Name="PART_Track"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="11"
+                            SnapsToDevicePixels="True">
+                        <Border x:Name="PART_Indicator"
+                                Background="{TemplateBinding Foreground}"
+                                CornerRadius="11"
+                                HorizontalAlignment="Left" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RoundedTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Style.Resources>
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+        </Style.Resources>
+    </Style>
+</ResourceDictionary>

@@ -9,15 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{viewModels:DownloadItemViewModel}">
 
-    <UserControl.Resources>
-        <Style x:Key="BlackAndWhite">
-            <Setter Property="Control.FontFamily" Value="Verdana" />
-            <Setter Property="Control.Background" Value="Black" />
-            <Setter Property="Control.Foreground" Value="White" />
-        </Style>
-    </UserControl.Resources>
-
-    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+    <Border BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="10">
         <Grid Margin="5">
             <!-- 1-я строка – растягивается, остальные - авторазмер по содержимому -->
             <Grid.RowDefinitions>
@@ -32,13 +24,14 @@
                    Stretch="Uniform" />
             <TextBox Grid.Row="1"
                      Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
-                     Margin="0,5,0,0" />
+                     Margin="0,5,0,0"
+                     Style="{StaticResource RoundedTextBoxStyle}" />
             <Button Grid.Row="2" Content="Старт" Width="100" Margin="0,10,0,0"
                     Command="{Binding StartCommand}"
-                    Style="{StaticResource BlackAndWhite}" />
+                    Style="{StaticResource RoundedButtonStyle}" />
             <Button Grid.Row="3" Content="Стоп" Width="100" Margin="0,10,0,0"
                     Command="{Binding StopCommand}"
-                    Style="{StaticResource BlackAndWhite}" />
+                    Style="{StaticResource RoundedButtonStyle}" />
         </Grid>
     </Border>
 </UserControl>

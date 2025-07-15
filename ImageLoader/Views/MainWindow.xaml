@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Image Loader"
         Width="800" Height="500"
-        MinWidth="700" MinHeight="400">
+        MinWidth="800" MinHeight="400">
 
     <!-- В качестве DataContext создаётся главный VM -->
     <Window.DataContext>
@@ -21,10 +21,13 @@
                     Orientation="Horizontal" HorizontalAlignment="Center">
             <ProgressBar Width="500" Height="25"
                          Minimum="0" Maximum="100"
+                         Style="{StaticResource RoundedProgressBarStyle}"
                          Value="{Binding TotalProgress, Mode=OneWay}" />
             <Button Content="Загрузить все" Width="120" Margin="10,0,0,0"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Command="{Binding LoadAllCommand}" />
-            <Button Content="Добавить окно" Width="100" Margin="10,0,0,0"
+            <Button Content="Добавить окно" Width="120" Margin="10,0,0,0"
+                    Style="{StaticResource RoundedButtonStyle}"
                     Command="{Binding AddNewDownloadItem}">
             </Button>
         </StackPanel>

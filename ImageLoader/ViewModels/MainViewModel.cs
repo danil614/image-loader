@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
 using ImageLoader.Infrastructure;
 
@@ -44,8 +45,19 @@ public class MainViewModel : ObservableObject
     /// <summary>
     /// Среднее значение Progress всех активных слотов (0-100).
     /// </summary>
-    public double TotalProgress => Items.Where(i => i.IsDownloading)
-        .Average(i => i.Progress);
+    public double TotalProgress
+    {
+        get
+        {
+            var downloadingItems = Items.Where(i => i.IsDownloading).ToList();
+            if (downloadingItems.Count > 0)
+            {
+                return downloadingItems.Average(i => i.Progress);
+            }
+
+            return 0; // Возвращаем 0, если нет загружаемых элементов
+        }
+    }
 
     private void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
