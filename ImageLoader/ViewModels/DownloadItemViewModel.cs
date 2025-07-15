@@ -89,14 +89,12 @@ public class DownloadItemViewModel : ObservableObject
         try
         {
             // Скачиваем файл в память.
-            var bytes = await DownloadAsync(Url, progress, _cts.Token);
+            var ms = await DownloadAsync(Url, progress, _cts.Token);
 
             // Создание BitmapImage может быть дорогим,
             // поэтому делаем это в Task.Run
             var img = await Task.Run(() =>
             {
-                using var ms = new MemoryStream(bytes);
-
                 var bmp = new BitmapImage();
                 bmp.BeginInit();
                 bmp.CacheOption = BitmapCacheOption.OnLoad; // сразу читаем всё
@@ -132,7 +130,7 @@ public class DownloadItemViewModel : ObservableObject
     /// Скачивает файл из сети с поддержкой отмены и прогресса.
     /// Работает поблочно, чтобы не держать в памяти гигантский буфер и не блокировать поток UI.
     /// </summary>
-    private static async Task<byte[]> DownloadAsync(
+    private static async Task<Stream> DownloadAsync(
         string url, IProgress<double> progress, CancellationToken token)
     {
         // HttpCompletionOption.ResponseHeadersRead - получаем поток сразу
@@ -142,7 +140,7 @@ public class DownloadItemViewModel : ObservableObject
 
         var total = response.Content.Headers.ContentLength;
         await using var stream = await response.Content.ReadAsStreamAsync(token);
-        using var ms = new MemoryStream();
+        var ms = new MemoryStream();
 
         var buffer = new byte[81920]; // стандартный размер буфера (80 КБ)
         long read = 0;
@@ -164,6 +162,7 @@ public class DownloadItemViewModel : ObservableObject
 
         // Чтобы общий прогресс не зависал на 99,9
         progress.Report(100);
-        return ms.ToArray();
+        ms.Position = 0;
+        return ms;
     }
 }

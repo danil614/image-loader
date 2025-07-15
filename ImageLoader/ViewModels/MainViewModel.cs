@@ -14,6 +14,8 @@ public class MainViewModel : ObservableObject
 
     public ICommand LoadAllCommand { get; }
 
+    public ICommand AddNewDownloadItem { get; }
+
     public MainViewModel()
     {
         // Подписываемся на изменения, чтобы обновлять общий прогресс
@@ -29,12 +31,21 @@ public class MainViewModel : ObservableObject
                     _ = item.StartAsync(); // асинхронный вызов внутри самой VM
             },
             o => Items.All(item => item.StartCommand.CanExecute(null)));
+
+        AddNewDownloadItem = new RelayCommand(o =>
+            {
+                var newItem = new DownloadItemViewModel();
+                Items.Add(newItem);
+                newItem.PropertyChanged += OnItemPropertyChanged;
+            },
+            o => true);
     }
 
     /// <summary>
-    /// Среднее значение Progress всех слотов (0-100).
+    /// Среднее значение Progress всех активных слотов (0-100).
     /// </summary>
-    public double TotalProgress => Items.Sum(i => i.Progress) / Items.Count;
+    public double TotalProgress => Items.Where(i => i.IsDownloading)
+        .Average(i => i.Progress);
 
     private void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {

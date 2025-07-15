@@ -1,0 +1,44 @@
+<UserControl x:Class="ImageLoader.Views.DownloadItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ImageLoader.Views"
+             xmlns:viewModels="clr-namespace:ImageLoader.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{viewModels:DownloadItemViewModel}">
+
+    <UserControl.Resources>
+        <Style x:Key="BlackAndWhite">
+            <Setter Property="Control.FontFamily" Value="Verdana" />
+            <Setter Property="Control.Background" Value="Black" />
+            <Setter Property="Control.Foreground" Value="White" />
+        </Style>
+    </UserControl.Resources>
+
+    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+        <Grid Margin="5">
+            <!-- 1-я строка – растягивается, остальные - авторазмер по содержимому -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Image Grid.Row="0"
+                   Source="{Binding ImageSource}"
+                   Stretch="Uniform" />
+            <TextBox Grid.Row="1"
+                     Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,5,0,0" />
+            <Button Grid.Row="2" Content="Старт" Width="100" Margin="0,10,0,0"
+                    Command="{Binding StartCommand}"
+                    Style="{StaticResource BlackAndWhite}" />
+            <Button Grid.Row="3" Content="Стоп" Width="100" Margin="0,10,0,0"
+                    Command="{Binding StopCommand}"
+                    Style="{StaticResource BlackAndWhite}" />
+        </Grid>
+    </Border>
+</UserControl>
